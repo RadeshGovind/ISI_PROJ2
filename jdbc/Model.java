@@ -127,7 +127,7 @@ public class Model {
          * @throws SQLException if database operation fails
          */
         // TO BE DONE
-        System.out.print("EMPTY")
+        System.out.print("EMPTY");
     }
 
     public static void travel(String[] values){
@@ -146,7 +146,7 @@ public class Model {
          * @return client ID or -1 if not found
          * @throws SQLException if database operation fails
          */
-        
+        return Integer.parseInt(name);//MARTELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     }
 
     public static void startTravel(int clientId, int scooterId, int stationId) throws SQLException {
@@ -157,7 +157,7 @@ public class Model {
          * @param stationId Station ID
          * @throws SQLException if database operation fails
          */
-        System.out.print("EMPTY")
+        System.out.print("EMPTY");
     }
 
     
@@ -169,7 +169,7 @@ public class Model {
          * @param stationId Destination station ID
          * @throws SQLException if database operation fails
          */
-        System.out.print("EMPTY")
+        System.out.print("EMPTY");
     }
 
     public static void updateDocks(/*FILL WITH PARAMETERS */) {
