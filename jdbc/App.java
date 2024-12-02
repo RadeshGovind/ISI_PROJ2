@@ -100,6 +100,11 @@ class UI {
             userInput = DisplayMenu();
             clearConsole();
             try {
+                //CHANGED!
+                if (userInput == Option.Exit) {
+                    System.out.println("Exiting the program...");
+                    break;
+                }
                 __dbMethods.get(userInput).doWork();
                 System.in.read();
 
@@ -173,10 +178,12 @@ class UI {
             Card cardData = new Card(card.split(","));
             Model.addUser(userData, cardData);
             System.out.println("Inserted with success.!");
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
+
 
 
     private void listReplacementOrder() {
@@ -191,6 +198,7 @@ class UI {
             ex.printStackTrace();
         }
     }
+
 
     private void startStopTravel() {
         // TODO

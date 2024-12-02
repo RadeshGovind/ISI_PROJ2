@@ -4,6 +4,8 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.sql.*;
 
+import static jdbc.UI.printResults;
+
 /*
 * 
 * @author MP
@@ -44,10 +46,11 @@ public class Model {
                 Connection conn = DriverManager.getConnection(UI.getInstance().getConnectionString());
                 PreparedStatement pstmtPerson = conn.prepareStatement(INSERT_PERSON, Statement.RETURN_GENERATED_KEYS);
                 PreparedStatement pstmtCard = conn.prepareStatement(INSERT_CARD);
-                PreparedStatement pstmtUser = conn.prepareStatement(INSERT_USER);) {
+                PreparedStatement pstmtUser = conn.prepareStatement(INSERT_USER);
+        ) {
             conn.setAutoCommit(false);
 
-            // Insert person
+            // Insert the person record (email, tax number, name)
             pstmtPerson.setString(1, userData.getEmail());
             pstmtPerson.setInt(2, userData.getTaxNumber());
             pstmtPerson.setString(3, userData.getName());
@@ -68,28 +71,47 @@ public class Model {
             
             
             
-            // CONTINUE
-
+            // CONTINUE ----|>  ADICIONADO
+            pstmtUser.setInt(1, personId); //
+            pstmtUser.setTimestamp(2, new Timestamp(System.currentTimeMillis()));//Data de Refisto
+            pstmtUser.executeUpdate();
 
 
 
             conn.commit();
-            if (pstmtUser != null)
+            if (pstmtUser != null)//sempre true por enquanto
                 pstmtUser.close();
             if (pstmtCard != null)
                 pstmtCard.close();
-            if (pstmtPerson != null)
+            if (pstmtPerson != null)//sempre true por enquanto
                 pstmtPerson.close();
-            if (conn != null) {
+            if (conn != null) {//sempre true por enquanto
                 conn.setAutoCommit(true);
                 conn.close();
             }
+            System.out.println("User added successfully!");
+            Model.listUsers();
         } catch (SQLException e) {
             System.out.println("Error on insert values");
             // e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
     }
+    //ADICIONADO
+    static void listUsers() {
+        final String QUERY = "SELECT * FROM person";  // Query to get all users from the person table
+        try (
+                Connection conn = DriverManager.getConnection(UI.getInstance().getConnectionString());
+                PreparedStatement pstmt = conn.prepareStatement(QUERY);
+                ResultSet rs = pstmt.executeQuery();
+        ) {
+            printResults(rs);
+        } catch (SQLException e) {
+            System.out.println("Error retrieving users");
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * To implement from this point forward. Do not need to change the code above.
