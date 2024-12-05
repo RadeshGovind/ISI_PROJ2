@@ -129,7 +129,7 @@ public class Model {
          * @param orders Criteria for listing orders
          * @throws SQLException if database operation fails
          */
-        final String VALUE_CMD = " TO BE DONE";
+        //final String VALUE_CMD = " TO BE DONE";
         // try(
         // Connection conn =
         // DriverManager.getConnection(UI.getInstance().getConnectionString());
@@ -137,6 +137,39 @@ public class Model {
         // ){
 
         // }
+        if (orders.length != 3) {
+            System.out.println("Invalid input. Expected format: startDate,endDate,stationNumber");
+            return;
+        }
+
+        String startDate = orders[0];
+        String endDate = orders[1];
+        int stationNumber;
+
+        try {
+            stationNumber = Integer.parseInt(orders[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("Station number must be an integer.");
+            return;
+        }
+
+        String query = "SELECT * FROM REPLACEMENTORDER WHERE dtorder >= CAST(? AS TIMESTAMP) AND dtorder <= CAST(? AS TIMESTAMP) AND station = ?";
+
+        try (Connection conn = DriverManager.getConnection(UI.getInstance().getConnectionString());
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, startDate);
+            pstmt.setString(2, endDate);
+            pstmt.setInt(3, stationNumber);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                UI.printResults(rs); // Exibir os resultados no console
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+
     }
 
     
